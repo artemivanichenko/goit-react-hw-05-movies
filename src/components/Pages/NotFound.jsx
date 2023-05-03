@@ -1,6 +1,6 @@
 const { Link } = require('react-router-dom');
 
-export const NotFound = () => {
+const NotFound = () => {
   return (
     <div>
       Page 404, not found
@@ -8,3 +8,5 @@ export const NotFound = () => {
     </div>
   );
 };
+
+export default NotFound;

@@ -1,72 +1,59 @@
-import { fetchTrending } from 'Api/Api';
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { MovieDetails } from './MovieDetails';
-// import { useParams } from 'react-router-dom';
+import { fetchMovieByName } from 'Api/Api';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
-export const Movies = () => {
+const Movies = () => {
   const [movies, setMovies] = useState([]);
-  const [totalPage, setTotalPage] = useState('');
-  const [page, setPage] = useState(1);
-  //   const { movieId } = useParams();
+  // const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('searchQuery');
+  const location = useLocation();
+
   useEffect(() => {
-    async function getTrending() {
+    if (!searchQuery) return;
+    async function getMovieByName() {
       try {
-        const response = await fetchTrending(page);
-        if (page === 1) {
-          setMovies(e => [...response.data.results]);
-        } else setMovies(e => [...e, ...response.data.results]);
-        // console.log(response);
+        const response = await fetchMovieByName(searchQuery);
         setMovies(response.data.results);
-        setTotalPage(response.data.total_pages);
       } catch (error) {
         console.log(error.message);
       }
     }
-    getTrending();
-  }, [page]);
+    getMovieByName();
+  }, [searchQuery]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSearchParams({ searchQuery: e.target.elements.searchQuery.value });
+    // console.log(e.target.elements.searchQuery.value);
+    e.target.reset();
+  };
+  // const handleInput = e => {
+  //   setSearchParams(e.target.value.toLowerCase());
+  // };
+
   return (
-    <StyleContainer>
-      <StyleTitle>Trending Movies</StyleTitle>
-      <StyleGallery>
-        {movies &&
-          movies.map(
-            ({
-              id,
-              backdrop_path,
-              original_title,
-              popularity,
-              release_date,
-            }) => (
-              <MovieDetails
-                release_date={release_date}
-                key={`${id}`}
-                id={id}
-                backdrop_path={backdrop_path}
-                target="_blank"
-                rel="noreferrer noopener"
-                original_title={original_title}
-                popularity={popularity}
-              />
-            )
-          )}
-      </StyleGallery>
-    </StyleContainer>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="searchQuery" />
+        <button type="submit">Search</button>
+      </form>
+      {movies.length ? (
+        <ul>
+          {movies.map(movie => (
+            <li key={movie.id}>
+              <Link to={`${movie.id}`} state={{ from: location }}>
+                {movie.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Enter movie name </p>
+      )}
+    </>
   );
 };
-const StyleTitle = styled.h1`
-  font-size: 22px;
-  text-align: center;
-`;
-const StyleContainer = styled.div`
-  max-width: 1200px;
-  margin: 20px auto;
-`;
 
-const StyleGallery = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  list-style: none;
-`;
+export default Movies;

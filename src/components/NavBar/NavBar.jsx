@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const NavBar = () => {
+const NavBar = () => {
   const navMap = [
     { path: '/', title: 'Home' },
     { path: '/movies', title: 'Movies' },
@@ -16,6 +16,8 @@ export const NavBar = () => {
     </SideBar>
   );
 };
+
+export default NavBar;
 const SideBar = styled.nav`
   background-color: #d5edfd;
   max-height: 30px;
