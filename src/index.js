@@ -16,11 +16,10 @@ a{
 }
 `;
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
-  <BrowserRouter>
-    <App />
-    <Global />
-  </BrowserRouter>
-
-  // </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+      <Global />
+    </BrowserRouter>
+  </React.StrictMode>
 );
