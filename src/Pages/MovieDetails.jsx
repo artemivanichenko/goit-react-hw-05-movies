@@ -9,7 +9,6 @@ const MovieDetails = () => {
   const [genres, setGenres] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  // console.log(location);
   const backLinkHref = location.state?.from ?? '/333';
   const PosterUrl = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
 

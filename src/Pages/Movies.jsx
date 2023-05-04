@@ -5,8 +5,8 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
-  // const [query, setQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const searchQuery = searchParams.get('searchQuery');
   const location = useLocation();
 
@@ -26,18 +26,20 @@ const Movies = () => {
   const handleSubmit = e => {
     e.preventDefault();
     setSearchParams({ searchQuery: e.target.elements.searchQuery.value });
-    // console.log(e.target.elements.searchQuery.value);
     e.target.reset();
+    setBtnDisabled(!btnDisabled);
   };
-  // const handleInput = e => {
-  //   setSearchParams(e.target.value.toLowerCase());
-  // };
-
+  const handleInput = e => {
+    const value = e.target.value.trim();
+    setBtnDisabled(!value);
+  };
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="searchQuery" />
-        <button type="submit">Search</button>
+        <input type="text" name="searchQuery" onChange={handleInput} />
+        <button type="submit" disabled={btnDisabled}>
+          Search
+        </button>
       </form>
       {movies.length ? (
         <ul>

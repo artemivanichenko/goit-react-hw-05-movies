@@ -22,7 +22,7 @@ const Home = () => {
     <StyleContainer>
       <StyleTitle>Trending Movies</StyleTitle>
       <StyleGallery>
-        {movies &&
+        {movies.length &&
           movies.map(movie => (
             <StyleGalleryItem
               key={movie.id}

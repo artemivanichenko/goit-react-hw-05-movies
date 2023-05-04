@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchReviewsById } from '../Api/Api';
 import styled from 'styled-components';
-import { fetchReviewsById } from '../../Api/Api';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -11,7 +11,6 @@ const Reviews = () => {
     async function getReviewsById() {
       try {
         const response = await fetchReviewsById(id);
-        console.log(response.data);
         setReviews(response.data.results);
       } catch (error) {
         console.log(error.message);
@@ -20,17 +19,14 @@ const Reviews = () => {
     getReviewsById();
   }, [id]);
 
-  // console.log(review);
   return reviews.length ? (
     <>
       <StyleReviewItem>
         {reviews.map(review => (
-          <>
-            <li key={review.id}>
-              <h3>Author: {review.author}</h3>
-              <StyleReviewInfo>{review.content}</StyleReviewInfo>
-            </li>
-          </>
+          <li key={review.id}>
+            <h3>Author: {review.author}</h3>
+            <StyleReviewInfo>{review.content}</StyleReviewInfo>
+          </li>
         ))}
       </StyleReviewItem>
     </>

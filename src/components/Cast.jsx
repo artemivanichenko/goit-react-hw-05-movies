@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchCreditsById } from '../../Api/Api';
+import { fetchCreditsById } from '../Api/Api';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
